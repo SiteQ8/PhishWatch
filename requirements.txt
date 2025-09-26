@@ -1,0 +1,26 @@
+# PhishGuard - Real-time Phishing Detection Dashboard
+# Core web framework
+Flask==2.3.3
+Flask-SocketIO==5.3.6
+
+# Real-time certificate monitoring
+certstream==1.12
+
+# DNS and network analysis
+dnspython==2.4.2
+python-whois==0.8.0
+requests==2.31.0
+
+# System utilities
+psutil==5.9.6
+
+# Development and testing
+pytest==7.4.3
+pytest-flask==1.3.0
+
+# Optional: For production deployment
+gunicorn==21.2.0
+eventlet==0.33.3
+
+# Note: OpenSquat should be installed separately from:
+# git clone https://github.com/atenreiro/opensquat.git
