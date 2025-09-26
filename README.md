@@ -46,7 +46,7 @@ A comprehensive real-time phishing detection system that integrates **CertStream
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/SiteQ8/phishguard.git
    cd phish_detector
    ```
 
