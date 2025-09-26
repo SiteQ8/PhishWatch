@@ -9,7 +9,7 @@ certstream==1.12
 # DNS and network analysis
 dnspython==2.6.1
 python-whois==0.8.0
-requests==2.31.0
+requests==2.32.4
 
 # System utilities
 psutil==5.9.6
