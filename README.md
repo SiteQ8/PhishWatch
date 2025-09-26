@@ -13,6 +13,7 @@ A comprehensive real-time phishing detection system that integrates **CertStream
 - **OpenSquat Integration**: Detect domain squatting and typosquatting
 - **Live Dashboard**: Real-time updates without page refresh using WebSockets
 - **Multi-source Detection**: Combines multiple detection methods for comprehensive coverage
+- **Demo**: https://3li.info/PhishGuard/
 
 ### 🧠 Intelligent Analysis
 - **Risk Scoring**: Machine learning-inspired risk calculation (0-100 scale)
