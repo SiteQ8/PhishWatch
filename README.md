@@ -1,6 +1,6 @@
-# PhishGuard - Real-time Phishing Detection Dashboard
+# PhishWatch - Real-time Phishing Detection Dashboard
 
-![PhishGuard Logo](https://img.shields.io/badge/PhishGuard-v2.1.0-blue.svg)
+![PhishWatch Logo](https://img.shields.io/badge/PhishWatch-v2.1.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
@@ -13,7 +13,7 @@ A comprehensive real-time phishing detection system that integrates **CertStream
 - **OpenSquat Integration**: Detect domain squatting and typosquatting
 - **Live Dashboard**: Real-time updates without page refresh using WebSockets
 - **Multi-source Detection**: Combines multiple detection methods for comprehensive coverage
-- **Demo**: https://3li.info/PhishGuard/
+- **Demo**: https://3li.info/PhishWatch/
 
 ### 🧠 Intelligent Analysis
 - **Risk Scoring**: Machine learning-inspired risk calculation (0-100 scale)
@@ -46,7 +46,7 @@ A comprehensive real-time phishing detection system that integrates **CertStream
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/SiteQ8/phishguard.git
+   git clone https://github.com/SiteQ8/PhishWatch.git
    cd phish_detector
    ```
 
@@ -188,7 +188,7 @@ gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:5000 app:app
 
 ### Docker Deployment
 
-PhishGuard includes full Docker support for easy deployment and containerization.
+PhishWatch includes full Docker support for easy deployment and containerization.
 
 #### Quick Start with Docker Compose
 ```bash
@@ -213,10 +213,10 @@ docker-compose down
 # Build the Docker image
 make build
 # or manually:
-docker build -t phishguard:latest .
+docker build -t PhishWatch:latest .
 
 # Run the container
-docker run -d -p 8080:5000 --name phishguard phishguard:latest
+docker run -d -p 8080:5000 --name PhishWatch PhishWatch:latest
 ```
 
 #### Environment Configuration
@@ -242,13 +242,13 @@ After starting with Docker, access the dashboard at: http://localhost:8080
 To verify that OpenSquat is properly integrated in the Docker container:
 ```bash
 # Check container logs for OpenSquat detection
-docker logs phishguard | grep opensquat_integration
+docker logs PhishWatch | grep opensquat_integration
 
 # Test OpenSquat directly in the container
-docker exec phishguard python3 /opt/opensquat/opensquat.py --help
+docker exec PhishWatch python3 /opt/opensquat/opensquat.py --help
 
 # Verify the integration path
-docker exec phishguard ls -la /opt/opensquat/opensquat.py
+docker exec PhishWatch ls -la /opt/opensquat/opensquat.py
 ```
 
 ## 🔒 Security Considerations
