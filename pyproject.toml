@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phishwatch"
+version = "2.0.0"
+description = "ICS/IoT/OT Phishing Detection Platform — Real-time phishing detection with industrial control system awareness"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Ali AlEnezi", email = "ali@alenezi.me"}
+]
+keywords = [
+    "phishing", "security", "ics", "iot", "ot", "scada", "cybersecurity",
+    "certstream", "opensquat", "threat-detection", "industrial-control-systems",
+    "operational-technology", "mitre-attack"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "Flask>=2.3",
+    "Flask-SocketIO>=5.3",
+    "certstream>=1.12",
+    "dnspython>=2.4",
+    "python-whois>=0.8",
+    "requests>=2.31",
+    "Levenshtein>=0.21",
+    "eventlet>=0.33",
+    "gunicorn>=21.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-flask>=1.3",
+    "pytest-cov>=4.1",
+    "black>=23.0",
+    "ruff>=0.1",
+    "mypy>=1.5",
+]
+
+[project.scripts]
+phishwatch = "phishwatch.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/SiteQ8/PhishWatch"
+Documentation = "https://github.com/SiteQ8/PhishWatch#readme"
+Repository = "https://github.com/SiteQ8/PhishWatch"
+Issues = "https://github.com/SiteQ8/PhishWatch/issues"
+
+[tool.setuptools.packages.find]
+include = ["phishwatch*"]
+
+[tool.setuptools.package-data]
+phishwatch = ["templates/**/*", "static/**/*"]
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

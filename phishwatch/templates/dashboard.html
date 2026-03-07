@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishWatch — ICS/IoT/OT Phishing Detection</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- ── Sidebar ──────────────────────────────────────── -->
+        <aside class="sidebar">
+            <div class="sidebar__logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>PhishWatch</h1>
+                    <span class="version">v{{ version }} — ICS/IoT/OT</span>
+                </div>
+            </div>
+
+            <nav class="sidebar__nav">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item" data-view="detections">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Detections
+                </a>
+                <a href="#" class="nav-item" data-view="ics">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                    ICS/OT Intel
+                </a>
+                <a href="#" class="nav-item" data-view="analyze">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Analyze
+                </a>
+            </nav>
+
+            <div class="sidebar__status">
+                <div class="status-badge" id="statusBadge">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusLabel">Offline</span>
+                </div>
+                <button class="btn-monitor" id="toggleMonitor">Start Monitoring</button>
+            </div>
+
+            <div class="sidebar__footer">
+                <span>By <a href="https://github.com/SiteQ8" target="_blank">Ali AlEnezi</a></span>
+            </div>
+        </aside>
+
+        <!-- ── Main ─────────────────────────────────────────── -->
+        <main class="main">
+            <!-- Top bar -->
+            <header class="topbar">
+                <div class="topbar__left">
+                    <h2 id="viewTitle">Dashboard</h2>
+                </div>
+                <div class="topbar__right">
+                    <button class="btn btn--ghost" id="btnExportCSV" title="Export CSV">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export
+                    </button>
+                    <button class="btn btn--ghost" id="btnRefresh" title="Refresh">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ═══ Dashboard View ═══ -->
+            <section class="view active" id="view-dashboard">
+                <!-- Stats row -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card__icon bg-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+                        <div class="stat-card__data">
+                            <span class="stat-value" id="sTotalDetections">0</span>
+                            <span class="stat-label">Total Detections</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--critical">
+                        <div class="stat-card__icon bg-red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                        <div class="stat-card__data">
+                            <span class="stat-value" id="sCritical">0</span>
+                            <span class="stat-label">Critical Alerts</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-card--ics">
+                        <div class="stat-card__icon bg-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+                        <div class="stat-card__data">
+                            <span class="stat-value" id="sICS">0</span>
+                            <span class="stat-label">ICS/OT Targeted</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon bg-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
+                        <div class="stat-card__data">
+                            <span class="stat-value" id="sAvgRisk">0</span>
+                            <span class="stat-label">Avg Risk Score</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts + Feed -->
+                <div class="grid-2col">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Live Detection Feed</h3>
+                            <div class="filter-row">
+                                <select id="filterRisk" class="select-sm">
+                                    <option value="all">All Risks</option>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                </select>
+                                <select id="filterSource" class="select-sm">
+                                    <option value="all">All Sources</option>
+                                    <option value="certstream">CertStream</option>
+                                    <option value="opensquat">OpenSquat</option>
+                                </select>
+                                <label class="checkbox-ics"><input type="checkbox" id="filterICS"> ICS Only</label>
+                            </div>
+                        </div>
+                        <div class="feed" id="detectionFeed">
+                            <div class="feed__empty">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                <p>No detections yet — start monitoring to see live results.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-stack">
+                        <div class="card card--chart">
+                            <h3>Risk Distribution</h3>
+                            <canvas id="chartRisk"></canvas>
+                        </div>
+                        <div class="card card--chart">
+                            <h3>Detection Timeline</h3>
+                            <canvas id="chartTimeline"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ Detections View ═══ -->
+            <section class="view" id="view-detections">
+                <div class="card">
+                    <div class="card__header"><h3>All Detections</h3></div>
+                    <div class="table-wrap">
+                        <table class="table" id="detectionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Domain</th><th>Score</th><th>Level</th><th>Source</th>
+                                    <th>ICS/OT</th><th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detectionsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ ICS/OT Intel View ═══ -->
+            <section class="view" id="view-ics">
+                <div class="stats-row">
+                    <div class="card card--full">
+                        <h3>ICS/OT Targeted Phishing Intel</h3>
+                        <p class="desc">Domains specifically targeting industrial control systems, SCADA, HMI, PLCs, and OT vendor infrastructure.</p>
+                        <div class="feed" id="icsFeed">
+                            <div class="feed__empty"><p>No ICS/OT targeted detections yet.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ Analyze View ═══ -->
+            <section class="view" id="view-analyze">
+                <div class="card card--analyze">
+                    <h3>Domain Analysis</h3>
+                    <p class="desc">Manually analyze any domain for phishing indicators and ICS/OT targeting.</p>
+                    <div class="analyze-form">
+                        <input type="text" id="analyzeDomain" placeholder="Enter domain (e.g. s1emens-login.tk)" class="input-lg">
+                        <button class="btn btn--primary" id="btnAnalyze">Analyze</button>
+                    </div>
+                    <div id="analyzeResult" class="analyze-result hidden"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Alert toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="detailModal">
+            <div class="modal__header">
+                <h3>Detection Details</h3>
+                <button class="modal__close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal__body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
