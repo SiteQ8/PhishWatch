@@ -3,23 +3,22 @@
 ## [2.0.0] — 2026-03-07
 
 ### Added
-- **ICS/IoT/OT Detection Engine** — Specialized detection for phishing targeting industrial control systems, SCADA, HMI, PLCs, and OT vendor infrastructure
-- ICS vendor impersonation detection (30+ vendors: Siemens, Schneider Electric, Rockwell, Honeywell, ABB, etc.)
-- Industrial protocol keyword matching (Modbus, DNP3, OPC UA, BACnet, PROFINET, etc.)
-- MITRE ATT&CK for ICS technique mapping
-- Sector classification (Energy, Manufacturing, Oil & Gas, Building Automation, etc.)
-- ICS-aware risk multiplier for elevated threat scoring
-- Domain entropy analysis for DGA detection
-- Homograph/IDN attack detection
-- Manual domain analysis API endpoint
-- CLI tool (`phishwatch serve`, `phishwatch analyze <domain>`)
-- Proper Python packaging with `pyproject.toml` and pip installable
-- Docker and Docker Compose support
-- GitHub Actions CI pipeline
-- Comprehensive test suite
-- Modern dashboard with ICS/OT intelligence view
-- Toast notifications for high-severity detections
-- CSV and JSON export
+- **Real-time Phishing Detection** — CertStream certificate transparency + OpenSquat NRD monitoring
+- **Brand Impersonation Detection** — 70+ brands across tech, finance, crypto, e-commerce, social media, shipping
+- **Typosquatting Analysis** — Character substitution, omission, and addition pattern detection
+- **Homograph/IDN Attack Detection** — Cyrillic, Greek, and Unicode lookalike character detection
+- **Shannon Entropy Analysis** — Detect algorithmically generated domains (DGA)
+- **9-factor Weighted Risk Scoring** — Similarity, registration age, patterns, DNS, geography, TLD, entropy, homograph, ICS targeting
+- **ICS/IoT/OT Module** — Advanced detection for phishing targeting industrial control systems (30+ vendors, 18+ protocols, MITRE ATT&CK mapping)
+- **Modern Dashboard** — 4 views (Dashboard, Detections, Threat Intel, Analyze) with WebSocket real-time updates
+- **CLI Tool** — `phishwatch serve` and `phishwatch analyze <domain>` commands
+- **REST API v2** — Full API for integration with security tools
+- **Python Package** — pip installable with `pyproject.toml`
+- **Docker Support** — Dockerfile and Docker Compose
+- **GitHub Actions CI** — Testing across Python 3.9-3.12
+- **20+ Unit Tests** — Comprehensive test coverage
+- **GitHub Pages Demo** — Interactive live demo
+- **CSV/JSON Export** — Export detections for SIEM integration
 
 ### Changed
 - Complete architecture rewrite from v1

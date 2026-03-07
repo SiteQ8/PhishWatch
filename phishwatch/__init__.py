@@ -1,6 +1,6 @@
 """
-PhishWatch - ICS/IoT/OT Phishing Detection Platform
-Real-time phishing detection with industrial control system awareness.
+PhishWatch — Real-time Phishing Detection Platform
+Monitor, detect, and analyze phishing domains as they appear.
 
 Author: Ali AlEnezi (SiteQ8)
 License: MIT

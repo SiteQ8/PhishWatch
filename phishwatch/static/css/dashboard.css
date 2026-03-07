@@ -232,7 +232,7 @@ body {
 .stat-card:hover { border-color: var(--border-light); }
 
 .stat-card--critical { border-left: 3px solid var(--red); }
-.stat-card--ics { border-left: 3px solid var(--amber); }
+.stat-card--high { border-left: 3px solid var(--orange); }
 
 .stat-card__icon {
     width: 42px; height: 42px;
@@ -242,6 +242,7 @@ body {
 }
 .bg-blue { background: var(--accent-glow); color: var(--accent); }
 .bg-red { background: var(--red-dim); color: var(--red); }
+.bg-orange { background: var(--orange-dim); color: var(--orange); }
 .bg-amber { background: var(--amber-dim); color: var(--amber); }
 .bg-teal { background: var(--teal-dim); color: var(--teal); }
 
@@ -404,6 +405,33 @@ body {
 .feed-item__meta .ics-tag {
     background: var(--amber-dim);
     color: var(--amber);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+.feed-item__meta .target-tag {
+    background: var(--accent-glow);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+.feed-item__meta .typo-tag {
+    background: var(--orange-dim);
+    color: var(--orange);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+.feed-item__meta .homo-tag {
+    background: var(--red-dim);
+    color: var(--red);
     padding: 1px 6px;
     border-radius: 4px;
     font-weight: 600;

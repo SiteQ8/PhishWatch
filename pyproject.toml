@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "phishwatch"
 version = "2.0.0"
-description = "ICS/IoT/OT Phishing Detection Platform — Real-time phishing detection with industrial control system awareness"
+description = "Real-time Phishing Detection Platform — Monitor, detect, and analyze phishing domains with CertStream, OpenSquat, brand impersonation detection, typosquatting analysis, and risk scoring"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
@@ -13,9 +13,10 @@ authors = [
     {name = "Ali AlEnezi", email = "ali@alenezi.me"}
 ]
 keywords = [
-    "phishing", "security", "ics", "iot", "ot", "scada", "cybersecurity",
-    "certstream", "opensquat", "threat-detection", "industrial-control-systems",
-    "operational-technology", "mitre-attack"
+    "phishing", "phishing-detection", "security", "cybersecurity",
+    "certstream", "opensquat", "threat-detection", "brand-protection",
+    "typosquatting", "homograph-attack", "domain-monitoring",
+    "certificate-transparency", "risk-scoring", "threat-intelligence",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",

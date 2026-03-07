@@ -2,23 +2,23 @@
   <img src="https://img.shields.io/badge/PhishWatch-v2.0.0-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/badge/ICS%2FIoT%2FOT-Aware-orange?style=for-the-badge" alt="ICS/IoT/OT">
-  <img src="https://img.shields.io/badge/MITRE%20ATT%26CK-ICS-red?style=for-the-badge" alt="MITRE">
+  <img src="https://img.shields.io/badge/CertStream-Real--time-orange?style=for-the-badge" alt="CertStream">
+  <img src="https://img.shields.io/badge/OpenSquat-NRD-purple?style=for-the-badge" alt="OpenSquat">
 </p>
 
 <h1 align="center">🛡️ PhishWatch</h1>
-<h3 align="center">ICS / IoT / OT Phishing Detection Platform</h3>
+<h3 align="center">Real-time Phishing Detection Platform</h3>
 
 <p align="center">
-  Real-time phishing detection with <strong>industrial control system awareness</strong>.<br>
-  The first open-source platform purpose-built for detecting phishing campaigns<br>
-  targeting SCADA, HMI, PLCs, and OT vendor infrastructure.
+  Monitor, detect, and analyze phishing domains as they appear.<br>
+  Combines <strong>CertStream</strong> certificate transparency monitoring with <strong>OpenSquat</strong><br>
+  domain squatting detection for comprehensive, real-time phishing defense.
 </p>
 
 <p align="center">
   <a href="https://siteq8.github.io/PhishWatch/">🔴 Live Demo</a> •
   <a href="#-quick-start">Quick Start</a> •
-  <a href="#-icsiotot-detection-engine">ICS/OT Engine</a> •
+  <a href="#-features">Features</a> •
   <a href="#-api-reference">API Docs</a> •
   <a href="#-contributing">Contributing</a>
 </p>
@@ -27,37 +27,55 @@
 
 ## 📸 Screenshots
 
-### Dashboard — Live Detection Feed with ICS/OT Tags
+### Dashboard — Live Detection Feed
 
 ![PhishWatch Dashboard](screenshots/dashboard-main.png)
 
-> Real-time detection feed showing phishing domains targeting ICS vendors (Siemens, Schneider Electric, Rockwell, Honeywell, ABB) with color-coded risk scores and ICS category tags.
+> Real-time phishing detection feed with brand impersonation tags, typosquatting detection, risk scoring, and filtered views. Monitors 70+ brands across tech, finance, crypto, e-commerce, and social media.
 
-### Live Monitoring with Toast Alerts
+### Live Monitoring with Alerts
 
 ![PhishWatch Live](screenshots/dashboard-live.png)
 
-> Live monitoring mode with toast notifications for critical and ICS/OT-targeted threats. Detection stats update in real-time via WebSocket.
+> Active monitoring with toast alerts for critical threats. Stats update in real-time via WebSocket connections.
 
 ---
 
-## ✨ What Makes PhishWatch Different
+## ✨ Features
 
-| Feature | PhishWatch v2 | Generic Phishing Tools |
-|---------|:---:|:---:|
-| Real-time CertStream monitoring | ✅ | ✅ |
-| OpenSquat domain squatting detection | ✅ | ✅ |
-| **ICS/IoT/OT vendor impersonation detection** | ✅ | ❌ |
-| **30+ ICS vendor keyword matching** | ✅ | ❌ |
-| **Industrial protocol detection (Modbus, DNP3, OPC UA...)** | ✅ | ❌ |
-| **MITRE ATT&CK for ICS mapping** | ✅ | ❌ |
-| **Sector classification (Energy, Oil & Gas, Manufacturing)** | ✅ | ❌ |
-| **ICS-aware risk multiplier** | ✅ | ❌ |
-| Homograph/IDN attack detection | ✅ | ⚠️ |
-| Domain entropy / DGA detection | ✅ | ⚠️ |
-| CLI tool + Python package | ✅ | ⚠️ |
-| Modern WebSocket dashboard | ✅ | ✅ |
-| Docker ready | ✅ | ✅ |
+### 🔍 Real-time Detection
+- **CertStream Integration** — Monitor SSL/TLS certificates as they're issued globally in real-time
+- **OpenSquat Integration** — Detect domain squatting and typosquatting from newly registered domains
+- **WebSocket Dashboard** — Live updates without page refresh, instant notifications
+
+### 🧠 Intelligent Analysis
+- **Brand Similarity Detection** — Identify domains impersonating 70+ known brands (PayPal, Microsoft, Google, Amazon, Chase, Coinbase, MetaMask, FedEx, and more)
+- **Typosquatting Detection** — Character substitution (g00gle), omission (gogle), and addition (googles) patterns
+- **Homograph/IDN Detection** — Catch Cyrillic, Greek, and other Unicode lookalike attacks
+- **Shannon Entropy Analysis** — Detect algorithmically generated domains (DGA)
+- **Multi-factor Risk Scoring** — 9-factor weighted scoring system (0-100 scale)
+
+### 📊 Professional Dashboard
+- **4 Views** — Dashboard, All Detections, Threat Intelligence, Domain Analysis
+- **Risk Filtering** — Filter by Critical/High/Medium, by source, search
+- **Interactive Charts** — Risk distribution and detection timeline
+- **Manual Analysis** — Analyze any domain on-demand via the UI
+- **CSV/JSON Export** — Export detection data for SIEM integration
+- **Toast Alerts** — Real-time notifications for high-severity detections
+
+### 🔧 Platform
+- **REST API** — Full API for integration with security tools and automation
+- **CLI Tool** — Command-line interface for scripting and CI/CD
+- **Python Package** — `pip install` ready with `pyproject.toml`
+- **Docker Ready** — Dockerfile and Docker Compose included
+- **CI/CD** — GitHub Actions workflow for testing across Python 3.9-3.12
+- **20+ Unit Tests** — Comprehensive test coverage
+
+### 🏭 Advanced: ICS/IoT/OT Module
+- Detects phishing targeting industrial control systems (30+ vendors: Siemens, Schneider, Rockwell, Honeywell, ABB...)
+- Industrial protocol keyword matching (Modbus, DNP3, OPC UA, BACnet, PROFINET...)
+- MITRE ATT&CK for ICS technique mapping
+- Automatic ICS-aware risk multiplier for elevated threat scoring
 
 ---
 
@@ -93,68 +111,16 @@ python -m phishwatch serve
 
 ---
 
-## 🏭 ICS/IoT/OT Detection Engine
-
-The core differentiator of PhishWatch is its **ICS/IoT/OT-aware detection engine** — purpose-built to catch phishing campaigns targeting industrial environments.
-
-### Monitored ICS Vendors (30+)
-
-| Vendor | Sector | Products Monitored |
-|--------|--------|--------------------|
-| **Siemens** | Energy / Manufacturing | WinCC, STEP 7, TIA Portal, S7 PLCs |
-| **Schneider Electric** | Energy / Building | EcoStruxure, Modicon, PowerSCADA |
-| **Rockwell Automation** | Manufacturing | FactoryTalk, Allen-Bradley, Studio 5000 |
-| **Honeywell** | Oil & Gas / Building | Experion PKS, Safety Manager |
-| **ABB** | Energy / Utilities | Ability Symphony, AC500 PLCs |
-| **Emerson** | Oil & Gas / Chemical | DeltaV, Ovation, AMS |
-| **Yokogawa** | Oil & Gas / Chemical | CENTUM VP, ProSafe-RS |
-| **GE Digital** | Energy / Utilities | Predix, iFIX, CIMPLICITY |
-| **AVEVA / Wonderware** | Manufacturing / SCADA | InTouch, Historian |
-| **Mitsubishi Electric** | Manufacturing | MELSEC, iQ-R Series |
-| And 20+ more... | | |
-
-### Industrial Protocols Detected
-
-`Modbus` `DNP3` `OPC UA` `BACnet` `PROFINET` `EtherCAT` `EtherNet/IP` `HART` `IEC 61850` `IEC 104` `S7comm` `FINS` `MELSEC` `CIP` `PCCC` `EtherNet/IP`
-
-### MITRE ATT&CK for ICS Mapping
-
-Detections are mapped to [MITRE ATT&CK for ICS](https://attack.mitre.org/matrices/ics/) techniques:
-
-| Technique ID | Name | Trigger |
-|---|---|---|
-| T0817 | Drive-by Compromise | Vendor impersonation domains |
-| T0819 | Exploit Public-Facing App | Portal/login phishing |
-| T0862 | Supply Chain Compromise | Firmware/update lures |
-| T0865 | Spearphishing Attachment | Email-themed domains |
-| T0869 | Standard Application Layer Protocol | Protocol-themed domains |
-
-### ICS Category Classification
-
-Detected domains are classified into categories:
-
-- **SCADA/HMI** — Targeting SCADA software and operator interfaces
-- **PLC/RTU** — Targeting programmable logic controllers
-- **DCS** — Targeting distributed control systems
-- **Safety System** — Targeting safety instrumented systems (SIS)
-- **Industrial Protocol** — Protocol-themed lures
-- **IoT/IIoT** — Targeting IoT device management
-- **Energy/Utilities** — Targeting energy sector infrastructure
-- **Building Automation** — Targeting BMS/HVAC systems
-- **Supply Chain** — Firmware update and license server lures
-
----
-
 ## 💻 CLI Usage
 
 ### Analyze a domain
 
 ```bash
 # Human-readable output
-phishwatch analyze siemens-tia-portal-update.tk
+phishwatch analyze paypal-login-secure.tk
 
 # JSON output
-phishwatch analyze schneider-firmware-download.xyz --json
+phishwatch analyze paypal-login-secure.tk --json
 ```
 
 **Example output:**
@@ -162,22 +128,16 @@ phishwatch analyze schneider-firmware-download.xyz --json
 ============================================================
   PhishWatch Domain Analysis
 ============================================================
-  Domain:       siemens-tia-portal-update.tk
-  Risk Score:   96/100
+  Domain:       paypal-login-secure.tk
+  Risk Score:   94/100
   Threat Level: CRITICAL
-
-  [ICS/OT Context]
-  Category:     SCADA/HMI
-  Sector:       Energy / Manufacturing
-  Vendors:      siemens
-  Protocols:    None
-  MITRE ICS:    T0817
-  Confidence:   50%
+  Summary:      CRITICAL (94/100): paypal-login-secure.tk — probable target: paypal
 
   Recommendations:
     • IMMEDIATE: Block domain across all network segments including OT
     • Add to SIEM and firewall deny-lists
     • Alert SOC and OT security teams
+    • Check for similar domains (typosquatting variants)
     • Investigate brand impersonation — consider takedown
 ============================================================
 ```
@@ -218,7 +178,7 @@ All endpoints are under `/api/v2/`.
 ```bash
 curl -X POST http://localhost:5000/api/v2/analyze \
   -H "Content-Type: application/json" \
-  -d '{"domain": "honeywell-experion-portal.cf"}'
+  -d '{"domain": "g00gle-account-security.top"}'
 ```
 
 ---
@@ -232,11 +192,11 @@ PhishWatch/
 │   ├── __main__.py              # python -m phishwatch
 │   ├── app.py                   # Flask + SocketIO application
 │   ├── cli.py                   # CLI entry point
-│   ├── config.py                # Configuration (ICS vendors, protocols, etc.)
+│   ├── config.py                # Configuration & brand watchlists
 │   ├── core/
-│   │   ├── ics_iot_detector.py  # ★ ICS/IoT/OT detection engine
 │   │   ├── domain_analyzer.py   # Domain analysis (similarity, entropy, homograph)
 │   │   ├── threat_classifier.py # Multi-factor risk scoring
+│   │   ├── ics_iot_detector.py  # ICS/IoT/OT detection module (advanced)
 │   │   ├── certstream_monitor.py# Real-time certificate monitoring
 │   │   └── opensquat_integration.py # Domain squatting detection
 │   ├── templates/
@@ -244,24 +204,24 @@ PhishWatch/
 │   └── static/
 │       ├── css/dashboard.css
 │       └── js/dashboard.js
-├── tests/                       # Test suite
-├── docs/index.html              # GitHub Pages demo
+├── tests/                       # Test suite (20+ tests)
+├── docs/index.html              # GitHub Pages live demo
 ├── screenshots/                 # Dashboard screenshots
 ├── Dockerfile                   # Production container
 ├── docker-compose.yml
 ├── pyproject.toml               # Python packaging
-├── requirements.txt
 └── README.md
 ```
 
-### Data Flow
+### Detection Pipeline
 
 ```
 CertStream (WSS) ──┐
-                    ├──▶ Domain Analyzer ──▶ ICS/OT Detector ──▶ Threat Classifier ──▶ Dashboard
-OpenSquat (NRD) ───┘     (similarity,        (vendor match,      (9-factor weighted    (WebSocket
-                          entropy,             protocol match,     scoring + ICS         real-time
-                          homograph)           MITRE mapping)      multiplier)           updates)
+                    ├─▶ Domain Analyzer ─▶ Threat Classifier ─▶ Dashboard
+OpenSquat (NRD) ───┘    · Brand similarity    · 9-factor scoring   · WebSocket
+                        · Typosquatting        · ICS/OT multiplier  · Real-time
+                        · Homograph detect     · Classification     · Alerts
+                        · Entropy / DGA        · Recommendations    · Export
 ```
 
 ---
@@ -278,10 +238,8 @@ pytest tests/ -v --cov=phishwatch
 ## 🐳 Docker Deployment
 
 ```bash
-# Build and run
 docker compose up -d
-
-# Or build manually
+# Or manually:
 docker build -t phishwatch .
 docker run -p 5000:5000 -e SECRET_KEY=your-secret phishwatch
 ```
@@ -290,44 +248,35 @@ docker run -p 5000:5000 -e SECRET_KEY=your-secret phishwatch
 
 ## ⚙️ Configuration
 
-All configuration via environment variables or `.env` file:
+Environment variables or `.env` file:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `SECRET_KEY` | `change-me` | Flask secret key |
 | `LOG_LEVEL` | `INFO` | Logging level |
 | `CERTSTREAM_URL` | `wss://certstream.calidog.io/` | CertStream endpoint |
-| `OPENSQUAT_SCAN_INTERVAL` | `1800` | Seconds between OpenSquat scans |
+| `OPENSQUAT_SCAN_INTERVAL` | `1800` | Seconds between scans |
 | `MAX_DETECTIONS` | `5000` | Max stored detections |
 | `CRITICAL_THRESHOLD` | `90` | Critical risk threshold |
-| `HIGH_THRESHOLD` | `70` | High risk threshold |
-| `MEDIUM_THRESHOLD` | `50` | Medium risk threshold |
 
 ---
 
 ## 🗺️ Roadmap
 
 - [ ] STIX/TAXII export for threat intelligence sharing
-- [ ] Integration with VirusTotal, URLScan.io
-- [ ] Machine learning model for ICS-specific phishing classification
-- [ ] Email alerting for critical ICS/OT detections
+- [ ] VirusTotal & URLScan.io integration
+- [ ] Machine learning classifier for phishing confidence
+- [ ] Email/Slack alerting for critical detections
 - [ ] SQLite/PostgreSQL persistence
 - [ ] Grafana dashboard integration
 - [ ] YARA rule generation from detections
-- [ ] Shodan integration for domain infrastructure analysis
+- [ ] Shodan integration for infrastructure analysis
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-Key areas for contribution:
-- Additional ICS vendor keywords and detection patterns
-- MITRE ATT&CK for ICS technique mapping
-- Dashboard UI improvements
-- Integration with threat intelligence feeds
-- Documentation and examples
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -344,5 +293,5 @@ MIT License — see [LICENSE](LICENSE).
 ---
 
 <p align="center">
-  <strong>PhishWatch</strong> — Protecting industrial infrastructure from phishing, one certificate at a time.
+  <strong>PhishWatch</strong> — Catching phishing domains before they catch you.
 </p>

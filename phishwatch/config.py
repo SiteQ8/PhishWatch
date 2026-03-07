@@ -17,7 +17,7 @@ class Config:
     # App metadata
     APP_NAME = "PhishWatch"
     APP_VERSION = "2.0.0"
-    APP_DESCRIPTION = "ICS/IoT/OT Phishing Detection Platform"
+    APP_DESCRIPTION = "Real-time Phishing Detection Platform"
 
     # CertStream
     CERTSTREAM_URL = os.environ.get("CERTSTREAM_URL", "wss://certstream.calidog.io/")
@@ -42,8 +42,52 @@ class Config:
     EXPORT_FORMATS = ["csv", "json", "pdf", "stix"]
     MAX_EXPORT_RECORDS = 50000
 
-    # ── ICS / IoT / OT Specific ──────────────────────────────────────────
+    # Default Brand Watchlist
+    DEFAULT_WATCHLIST: List[str] = [
+        # Major tech / cloud
+        "paypal", "microsoft", "google", "amazon", "apple",
+        "facebook", "meta", "netflix", "dropbox", "adobe",
+        "zoom", "linkedin", "twitter", "instagram", "whatsapp",
+        "github", "slack", "salesforce", "okta", "atlassian",
+        "cloudflare", "aws", "azure",
+        # Financial
+        "chase", "wellsfargo", "bankofamerica", "citibank",
+        "amex", "visa", "mastercard", "coinbase", "binance",
+        "stripe", "square", "venmo",
+        # Productivity
+        "office365", "outlook", "onedrive", "sharepoint",
+        "gmail", "drive", "icloud",
+        # Social / messaging
+        "telegram", "signal", "discord", "tiktok", "snapchat",
+        "reddit", "spotify", "twitch", "youtube",
+        # E-commerce
+        "ebay", "walmart", "target", "shopify", "alibaba",
+        # Crypto / fintech
+        "metamask", "ledger", "phantom", "opensea",
+        # Shipping / logistics
+        "fedex", "ups", "usps", "dhl",
+    ]
 
+    # Threat Intelligence
+    SUSPICIOUS_TLDS: List[str] = [
+        ".tk", ".ml", ".cf", ".ga", ".buzz", ".click", ".download",
+        ".loan", ".cricket", ".science", ".work", ".party",
+        ".top", ".xyz", ".icu", ".cam", ".rest",
+    ]
+
+    HIGH_RISK_COUNTRIES: List[str] = ["RU", "CN", "KP", "IR"]
+
+    SUSPICIOUS_KEYWORDS: List[str] = [
+        "login", "signin", "sign-in", "verify", "account", "update",
+        "suspend", "confirm", "support", "billing", "payment",
+        "secure", "auth", "credential", "password", "reset",
+        "urgent", "alert", "notification", "activate", "unlock",
+        "recover", "restore", "validate", "expire", "renew",
+        "invoice", "receipt", "refund", "shipping", "delivery",
+        "track", "claim", "reward", "prize", "winner",
+    ]
+
+    # ICS / IoT / OT Module (Advanced Feature)
     ICS_VENDORS: List[str] = [
         "siemens", "schneider", "schneider-electric", "rockwell",
         "allen-bradley", "honeywell", "abb", "emerson", "yokogawa",
@@ -65,43 +109,13 @@ class Config:
         "scada", "hmi", "plc", "rtu", "dcs", "ics", "ot-network",
         "industrial", "control-system", "historian", "iiot",
         "smart-grid", "substation", "turbine", "pipeline",
-        "compressor", "reactor", "boiler", "hvac-control",
-        "bms", "building-management", "energy-management",
-        "water-treatment", "wastewater", "power-plant",
-        "oil-gas", "refinery", "manufacturing", "pharma",
-        "safety-system", "sis", "esd", "fire-gas",
     ]
 
     IOT_TERMS: List[str] = [
         "iot", "smart-home", "smart-device", "mqtt", "coap",
         "zigbee", "z-wave", "lorawan", "nbiot", "sigfox",
-        "nodered", "node-red", "home-assistant", "openhab",
-        "tuya", "tasmota", "esphome", "firmware-update",
-        "device-management", "fleet-management", "edge-gateway",
-        "sensor-hub", "telemetry", "actuator",
+        "firmware-update", "device-management",
     ]
-
-    DEFAULT_WATCHLIST: List[str] = [
-        # Consumer brands
-        "paypal", "microsoft", "google", "amazon", "apple",
-        "facebook", "netflix", "dropbox", "adobe", "zoom",
-        "linkedin", "twitter", "instagram", "whatsapp",
-        "github", "slack", "salesforce", "okta",
-        # ICS/OT Vendors
-        "siemens", "schneider", "rockwell", "honeywell", "abb",
-        "emerson", "yokogawa", "ge-digital", "mitsubishi",
-        "wonderware", "factorytalk", "aveva",
-    ]
-
-    # ── Threat Intelligence ──────────────────────────────────────────────
-
-    SUSPICIOUS_TLDS: List[str] = [
-        ".tk", ".ml", ".cf", ".ga", ".buzz", ".click", ".download",
-        ".loan", ".cricket", ".science", ".work", ".party",
-        ".top", ".xyz", ".icu", ".cam", ".rest",
-    ]
-
-    HIGH_RISK_COUNTRIES: List[str] = ["RU", "CN", "KP", "IR"]
 
     MITRE_ICS_TECHNIQUES: Dict[str, str] = {
         "T0817": "Drive-by Compromise",

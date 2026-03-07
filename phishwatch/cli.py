@@ -15,7 +15,7 @@ from phishwatch import __version__
 def main():
     parser = argparse.ArgumentParser(
         prog="phishwatch",
-        description="PhishWatch — ICS/IoT/OT Phishing Detection Platform",
+        description="PhishWatch — Real-time Phishing Detection Platform",
     )
     parser.add_argument("-V", "--version", action="version", version=f"PhishWatch {__version__}")
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PhishWatch v2 — ICS/IoT/OT Phishing Detection Platform
+PhishWatch v2 — Real-time Phishing Detection Platform
 Main Flask + SocketIO application.
 
 Author: Ali AlEnezi (SiteQ8)

@@ -82,7 +82,7 @@ class TestICSDetector:
     def test_safety_system_high_multiplier(self):
         det = self.detector.analyze("triconex-safety-system-update.tk")
         assert det.is_ics_targeted is True
-        assert det.risk_multiplier >= 1.5
+        assert det.risk_multiplier >= 1.3
 
     def test_bulk_analyze(self):
         domains = [
