@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishWatch v2 — ICS/IoT/OT Phishing Detection Platform (Demo)</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+:root{--bg-0:#0a0e17;--bg-1:#0f1520;--bg-2:#151d2e;--bg-3:#1a243a;--bg-4:#1f2d47;--border:#1e2a42;--border-light:#263350;--text-0:#f0f4fc;--text-1:#c4cedf;--text-2:#7a8baa;--text-3:#4a5a78;--accent:#3b82f6;--accent-dim:#2563eb;--accent-glow:rgba(59,130,246,.15);--red:#ef4444;--red-dim:rgba(239,68,68,.12);--orange:#f97316;--orange-dim:rgba(249,115,22,.12);--amber:#eab308;--amber-dim:rgba(234,179,8,.12);--green:#22c55e;--green-dim:rgba(34,197,94,.12);--teal:#06b6d4;--teal-dim:rgba(6,182,212,.12);--font-mono:'JetBrains Mono','Fira Code',monospace;--font-sans:'Space Grotesk',system-ui,sans-serif;--r:8px;--rl:12px;--t:180ms ease}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{font-size:14px}body{font-family:var(--font-sans);background:var(--bg-0);color:var(--text-1);line-height:1.55;overflow-x:hidden;min-height:100vh}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:var(--bg-1);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.25rem 0}
+.sidebar__logo{display:flex;align-items:center;gap:.75rem;padding:0 1.25rem 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),#6366f1);border-radius:var(--r);display:grid;place-items:center;color:#fff;flex-shrink:0}
+.sidebar__logo h1{font-size:1.15rem;font-weight:700;color:var(--text-0);letter-spacing:-.02em}
+.version{font-size:.7rem;color:var(--text-3);font-family:var(--font-mono)}
+.sidebar__nav{flex:1;padding:0 .75rem}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:var(--r);color:var(--text-2);text-decoration:none;font-size:.9rem;font-weight:500;transition:var(--t);margin-bottom:2px;cursor:pointer}
+.nav-item:hover{background:var(--bg-3);color:var(--text-0)}
+.nav-item.active{background:var(--accent-glow);color:var(--accent)}
+.nav-item.active svg{stroke:var(--accent)}
+.sidebar__status{padding:1rem 1.25rem;border-top:1px solid var(--border);margin-top:auto}
+.status-badge{display:flex;align-items:center;gap:.5rem;font-size:.8rem;margin-bottom:.75rem;color:var(--text-2)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.btn-demo{width:100%;padding:.55rem;border:1px solid var(--amber);background:var(--amber-dim);color:var(--amber);font-family:var(--font-sans);font-weight:600;font-size:.85rem;border-radius:var(--r);cursor:default}
+.sidebar__footer{padding:.75rem 1.25rem 0;font-size:.7rem;color:var(--text-3)}
+.sidebar__footer a{color:var(--accent);text-decoration:none}
+.main{display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg-1);flex-shrink:0}
+.topbar h2{font-size:1.1rem;font-weight:600;color:var(--text-0)}
+.demo-badge{background:var(--amber-dim);color:var(--amber);padding:.25rem .75rem;border-radius:20px;font-size:.75rem;font-weight:600;font-family:var(--font-mono)}
+.content{flex:1;overflow-y:auto;padding:1.25rem 1.5rem}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.25rem}
+.stat-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.15rem;display:flex;align-items:center;gap:.85rem;transition:var(--t)}
+.stat-card:hover{border-color:var(--border-light)}
+.stat-card--critical{border-left:3px solid var(--red)}
+.stat-card--ics{border-left:3px solid var(--amber)}
+.stat-card__icon{width:42px;height:42px;border-radius:var(--r);display:grid;place-items:center;flex-shrink:0}
+.bg-blue{background:var(--accent-glow);color:var(--accent)}
+.bg-red{background:var(--red-dim);color:var(--red)}
+.bg-amber{background:var(--amber-dim);color:var(--amber)}
+.bg-teal{background:var(--teal-dim);color:var(--teal)}
+.stat-value{display:block;font-size:1.6rem;font-weight:700;color:var(--text-0);font-family:var(--font-mono);line-height:1.1}
+.stat-label{font-size:.78rem;color:var(--text-2);margin-top:2px}
+.grid-2col{display:grid;grid-template-columns:1.5fr 1fr;gap:1rem}
+.card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.card__header{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;border-bottom:1px solid var(--border)}
+.card__header h3{font-size:.95rem;font-weight:600;color:var(--text-0)}
+.filter-row{display:flex;gap:.5rem;align-items:center}
+.select-sm{padding:.3rem .6rem;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--r);color:var(--text-1);font-family:var(--font-sans);font-size:.8rem}
+.checkbox-ics{display:flex;align-items:center;gap:.3rem;font-size:.8rem;color:var(--amber);font-weight:500}
+.feed{max-height:520px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--bg-4) transparent}
+.feed-item{display:grid;grid-template-columns:1fr auto;gap:.35rem;padding:.75rem 1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:var(--t)}
+.feed-item:hover{background:var(--bg-3)}
+.feed-item__domain{font-family:var(--font-mono);font-weight:600;font-size:.88rem;color:var(--text-0);word-break:break-all}
+.feed-item__meta{display:flex;gap:.7rem;font-size:.75rem;color:var(--text-2);margin-top:2px}
+.ics-tag{background:var(--amber-dim);color:var(--amber);padding:1px 6px;border-radius:4px;font-weight:600;font-size:.7rem}
+.risk-pill{display:inline-flex;align-items:center;justify-content:center;min-width:38px;padding:.2rem .5rem;border-radius:6px;font-family:var(--font-mono);font-weight:700;font-size:.78rem;align-self:center}
+.risk-pill--critical{background:var(--red-dim);color:var(--red)}
+.risk-pill--high{background:var(--orange-dim);color:var(--orange)}
+.risk-pill--medium{background:var(--amber-dim);color:var(--amber)}
+.risk-pill--low{background:var(--green-dim);color:var(--green)}
+.charts-stack{display:flex;flex-direction:column;gap:1rem}
+.card--chart{padding:1rem}
+.card--chart h3{font-size:.85rem;color:var(--text-2);margin-bottom:.5rem}
+.card--chart canvas{max-height:180px}
+.toast-container{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--bg-2);border:1px solid var(--red);border-radius:var(--r);padding:.85rem 1rem;max-width:380px;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:slideIn .3s ease}
+.toast--ics{border-color:var(--amber)}
+.toast__title{font-weight:700;font-size:.85rem;color:var(--red)}
+.toast--ics .toast__title{color:var(--amber)}
+.toast__domain{font-family:var(--font-mono);font-size:.82rem;color:var(--text-0);margin-top:2px}
+.toast__score{font-size:.78rem;color:var(--text-2)}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.grid-2col{grid-template-columns:1fr}.stats-row{grid-template-columns:repeat(2,1fr)}}
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="sidebar__logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-linecap="round"/></svg>
+                </div>
+                <div>
+                    <h1>PhishWatch</h1>
+                    <span class="version">v2.0.0 — ICS/IoT/OT</span>
+                </div>
+            </div>
+            <nav class="sidebar__nav">
+                <a class="nav-item active">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Dashboard
+                </a>
+                <a class="nav-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Detections
+                </a>
+                <a class="nav-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                    ICS/OT Intel
+                </a>
+                <a class="nav-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Analyze
+                </a>
+            </nav>
+            <div class="sidebar__status">
+                <div class="status-badge"><span class="status-dot"></span><span>Demo Mode</span></div>
+                <div class="btn-demo">LIVE DEMO</div>
+            </div>
+            <div class="sidebar__footer"><span>By <a href="https://github.com/SiteQ8" target="_blank">Ali AlEnezi (SiteQ8)</a></span></div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <h2>Dashboard</h2>
+                <span class="demo-badge">DEMO MODE — Simulated Data</span>
+            </header>
+            <div class="content">
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card__icon bg-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+                        <div><span class="stat-value" id="sTotal">247</span><span class="stat-label">Total Detections</span></div>
+                    </div>
+                    <div class="stat-card stat-card--critical">
+                        <div class="stat-card__icon bg-red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                        <div><span class="stat-value" id="sCrit">18</span><span class="stat-label">Critical Alerts</span></div>
+                    </div>
+                    <div class="stat-card stat-card--ics">
+                        <div class="stat-card__icon bg-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+                        <div><span class="stat-value" id="sICS">34</span><span class="stat-label">ICS/OT Targeted</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon bg-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
+                        <div><span class="stat-value">72.4</span><span class="stat-label">Avg Risk Score</span></div>
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Live Detection Feed</h3>
+                            <div class="filter-row">
+                                <select class="select-sm"><option>All Risks</option></select>
+                                <select class="select-sm"><option>All Sources</option></select>
+                                <label class="checkbox-ics"><input type="checkbox"> ICS Only</label>
+                            </div>
+                        </div>
+                        <div class="feed" id="demoFeed"></div>
+                    </div>
+                    <div class="charts-stack">
+                        <div class="card card--chart"><h3>Risk Distribution</h3><canvas id="chartRisk"></canvas></div>
+                        <div class="card card--chart"><h3>Detection Timeline</h3><canvas id="chartTimeline"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+    // Demo data
+    const demoDetections = [
+        { domain: "s1emens-tia-portal-update.tk", score: 96, source: "CertStream", target: "siemens", ics: true, cat: "SCADA/HMI", sector: "Energy / Manufacturing", time: "2m ago" },
+        { domain: "schneider-electric-firmware.download", score: 94, source: "CertStream", target: "schneider", ics: true, cat: "ICS Vendor", sector: "Energy / Building", time: "5m ago" },
+        { domain: "paypal-verify-account.xyz", score: 91, source: "CertStream", target: "paypal", ics: false, cat: null, time: "8m ago" },
+        { domain: "rockwell-factorytalk-login.ml", score: 93, source: "OpenSquat", target: "rockwell", ics: true, cat: "PLC/RTU", sector: "Manufacturing", time: "12m ago" },
+        { domain: "honeywell-experion-portal.cf", score: 92, source: "CertStream", target: "honeywell", ics: true, cat: "DCS", sector: "Oil & Gas", time: "15m ago" },
+        { domain: "microsoft-365-signin.buzz", score: 88, source: "CertStream", target: "microsoft", ics: false, cat: null, time: "18m ago" },
+        { domain: "abb-modbus-gateway-config.tk", score: 91, source: "OpenSquat", target: "abb", ics: true, cat: "Industrial Protocol", sector: "Energy / Utilities", time: "22m ago" },
+        { domain: "yokogawa-centum-update.ga", score: 89, source: "CertStream", target: "yokogawa", ics: true, cat: "DCS", sector: "Oil & Gas / Chemical", time: "25m ago" },
+        { domain: "google-account-security.top", score: 82, source: "CertStream", target: "google", ics: false, cat: null, time: "28m ago" },
+        { domain: "opcua-mqtt-dashboard-login.xyz", score: 85, source: "OpenSquat", target: "", ics: true, cat: "Industrial Protocol", sector: "IoT / Edge", time: "31m ago" },
+        { domain: "emerson-deltav-license.click", score: 90, source: "CertStream", target: "emerson", ics: true, cat: "DCS", sector: "Oil & Gas / Chemical", time: "35m ago" },
+        { domain: "triconex-safety-firmware.ml", score: 95, source: "OpenSquat", target: "triconex", ics: true, cat: "Safety System", sector: "Oil & Gas", time: "38m ago" },
+        { domain: "amazon-prime-billing.icu", score: 78, source: "CertStream", target: "amazon", ics: false, cat: null, time: "42m ago" },
+        { domain: "moxa-edge-gateway-update.tk", score: 86, source: "CertStream", target: "moxa", ics: true, cat: "IoT/IIoT", sector: "Network / Edge", time: "45m ago" },
+        { domain: "aveva-wonderware-login.cf", score: 88, source: "OpenSquat", target: "wonderware", ics: true, cat: "SCADA/HMI", sector: "Manufacturing", time: "48m ago" },
+        { domain: "netflix-payment-update.rest", score: 75, source: "CertStream", target: "netflix", ics: false, cat: null, time: "52m ago" },
+        { domain: "bacnet-bms-controller.xyz", score: 80, source: "OpenSquat", target: "", ics: true, cat: "Building Automation", sector: "Building Automation", time: "55m ago" },
+        { domain: "ge-digital-predix-login.ga", score: 87, source: "CertStream", target: "ge-digital", ics: true, cat: "ICS Vendor", sector: "Energy / Utilities", time: "58m ago" },
+        { domain: "dropbox-file-shared.cam", score: 71, source: "CertStream", target: "dropbox", ics: false, cat: null, time: "1h ago" },
+        { domain: "profinet-plc-config-tool.tk", score: 83, source: "OpenSquat", target: "", ics: true, cat: "Industrial Protocol", sector: "Manufacturing", time: "1h ago" },
+    ];
+
+    function riskClass(s) { return s >= 90 ? 'critical' : s >= 70 ? 'high' : s >= 50 ? 'medium' : 'low'; }
+
+    // Render feed
+    const feed = document.getElementById('demoFeed');
+    feed.innerHTML = demoDetections.map(d => {
+        const ics = d.ics ? `<span class="ics-tag">${d.cat}</span>` : '';
+        return `<div class="feed-item">
+            <div>
+                <div class="feed-item__domain">${d.domain}</div>
+                <div class="feed-item__meta">
+                    <span>${d.source}</span>
+                    <span>${d.target || '—'}</span>
+                    <span>${d.time}</span>
+                    ${ics}
+                </div>
+            </div>
+            <span class="risk-pill risk-pill--${riskClass(d.score)}">${d.score}</span>
+        </div>`;
+    }).join('');
+
+    // Charts
+    Chart.defaults.color = '#7a8baa';
+    Chart.defaults.borderColor = '#1e2a42';
+
+    new Chart(document.getElementById('chartRisk'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Critical', 'High', 'Medium', 'Low'],
+            datasets: [{ data: [18, 42, 31, 9], backgroundColor: ['#ef4444', '#f97316', '#eab308', '#22c55e'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 11 } } } } }
+    });
+
+    new Chart(document.getElementById('chartTimeline'), {
+        type: 'bar',
+        data: {
+            labels: ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+            datasets: [
+                { label: 'General', data: [3, 2, 1, 4, 8, 12, 15, 18, 14, 11, 7, 5], backgroundColor: '#3b82f6', borderRadius: 4 },
+                { label: 'ICS/OT', data: [1, 0, 1, 2, 3, 5, 7, 8, 6, 4, 3, 2], backgroundColor: '#eab308', borderRadius: 4 }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 11 } } } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#1e2a42' } } } }
+    });
+
+    // Simulate live detections
+    const liveDomains = [
+        { domain: "advantech-webaccess-login.tk", score: 88, ics: true, cat: "IoT/IIoT" },
+        { domain: "apple-id-verify-now.xyz", score: 84, ics: false },
+        { domain: "mitsubishi-melsec-update.ml", score: 91, ics: true, cat: "PLC/RTU" },
+        { domain: "zoom-meeting-expired.click", score: 76, ics: false },
+        { domain: "dnp3-scada-monitor.ga", score: 87, ics: true, cat: "Industrial Protocol" },
+    ];
+
+    let idx = 0;
+    setInterval(() => {
+        const d = liveDomains[idx % liveDomains.length];
+        idx++;
+        // Update counter
+        const el = document.getElementById('sTotal');
+        el.textContent = parseInt(el.textContent) + 1;
+        if (d.score >= 90) { const c = document.getElementById('sCrit'); c.textContent = parseInt(c.textContent) + 1; }
+        if (d.ics) { const i = document.getElementById('sICS'); i.textContent = parseInt(i.textContent) + 1; }
+
+        // Show toast
+        if (d.score >= 80) {
+            const toast = document.createElement('div');
+            toast.className = d.ics ? 'toast toast--ics' : 'toast';
+            toast.innerHTML = `<div class="toast__title">${d.ics ? '⚠ ICS/OT' : '🚨'} ${d.score >= 90 ? 'CRITICAL' : 'HIGH'} Threat</div><div class="toast__domain">${d.domain}</div><div class="toast__score">Score: ${d.score}/100${d.ics ? ' • ' + d.cat : ''}</div>`;
+            document.getElementById('toastContainer').appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // Add to feed
+        const ics = d.ics ? `<span class="ics-tag">${d.cat}</span>` : '';
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        item.style.animation = 'slideIn 0.3s ease';
+        item.innerHTML = `<div><div class="feed-item__domain">${d.domain}</div><div class="feed-item__meta"><span>CertStream</span><span>just now</span>${ics}</div></div><span class="risk-pill risk-pill--${riskClass(d.score)}">${d.score}</span>`;
+        feed.insertBefore(item, feed.firstChild);
+    }, 4000);
+    </script>
+</body>
+</html>
