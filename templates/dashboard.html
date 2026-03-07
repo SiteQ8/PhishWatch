@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config.APP_NAME }} - Real-time Phishing Detection Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🛡️ {{ config.APP_NAME }}</h1>
+                    <span class="version">v{{ config.APP_VERSION }}</span>
+                </div>
+                <div class="monitoring-status">
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="statusText">Monitoring Stopped</span>
+                    </div>
+                    <button class="btn btn--sm btn--outline" id="toggleMonitoring">Start Monitoring</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Statistics Panel -->
+            <section class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalDetections">{{ stats.total_detections }}</div>
+                    <div class="stat-label">Total Detections</div>
+                    <div class="stat-trend positive">📈 Live</div>
+                </div>
+                <div class="stat-card critical">
+                    <div class="stat-value" id="criticalAlerts">{{ stats.critical_alerts }}</div>
+                    <div class="stat-label">Critical Alerts</div>
+                    <div class="stat-trend negative">🚨 High Priority</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgRiskScore">{{ "%.1f"|format(stats.avg_risk_score) }}</div>
+                    <div class="stat-label">Avg Risk Score</div>
+                    <div class="stat-trend neutral">📊 Calculated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeMonitoring">
+                        {% if stats.active_monitoring %}Active{% else %}Stopped{% endif %}
+                    </div>
+                    <div class="stat-label">Monitoring Status</div>
+                    <div class="stat-trend" id="monitoringTrend">
+                        {% if stats.active_monitoring %}🟢 Online{% else %}🔴 Offline{% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label>Filter by Risk Level:</label>
+                        <select id="riskFilter" class="filter-select">
+                            <option value="all">All Levels</option>
+                            <option value="critical">Critical (90+)</option>
+                            <option value="high">High (70-89)</option>
+                            <option value="medium">Medium (50-69)</option>
+                            <option value="low">Low (<50)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Filter by Source:</label>
+                        <select id="sourceFilter" class="filter-select">
+                            <option value="all">All Sources</option>
+                            <option value="certstream">CertStream</option>
+                            <option value="opensquat">OpenSquat</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <button class="btn btn--primary" id="exportBtn">📥 Export Data</button>
+                        <button class="btn btn--secondary" id="refreshBtn">🔄 Refresh</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Detection Feed -->
+                <section class="detection-feed">
+                    <h2>🎯 Live Detection Feed</h2>
+                    <div class="feed-header">
+                        <span class="feed-count">Showing <span id="detectionCount">0</span> detections</span>
+                        <div class="feed-controls">
+                            <button class="btn btn--sm" id="clearFeed">Clear</button>
+                            <button class="btn btn--sm" id="pauseFeed">Pause</button>
+                        </div>
+                    </div>
+                    <div class="detection-list" id="detectionList">
+                        <div class="no-detections">
+                            <p>🔍 No detections yet. Start monitoring to see live phishing domains.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Charts -->
+                <section class="analytics-section">
+                    <h2>📊 Detection Analytics</h2>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Detections Over Time</h3>
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Risk Level Distribution</h3>
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Keywords Management -->
+                <section class="keywords-section">
+                    <h2>🎯 Monitoring Keywords</h2>
+                    <div class="keywords-container">
+                        <div class="keyword-input">
+                            <input type="text" id="newKeyword" placeholder="Add new keyword to monitor">
+                            <button class="btn btn--sm btn--primary" id="addKeywordBtn">Add</button>
+                        </div>
+                        <div class="keywords-list" id="keywordsList">
+                            <!-- Keywords will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Alert System -->
+        <div class="alert-system" id="alertSystem">
+            <!-- Alerts will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Detection Detail Modal -->
+    <div class="modal" id="detectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔍 Detection Details</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
