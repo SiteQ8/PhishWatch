@@ -10,6 +10,7 @@ import csv
 import io
 import json
 import logging
+import os
 import threading
 import time
 from datetime import datetime, timezone
@@ -332,4 +333,5 @@ socketio = _pw.socketio
 
 
 if __name__ == "__main__":
-    _pw.run(debug=True)
+    # The Werkzeug debugger allows remote code execution; enable it only when explicitly requested.
+    _pw.run(debug=os.environ.get("PHISHWATCH_DEBUG", "").lower() in ("1", "true", "yes"))
