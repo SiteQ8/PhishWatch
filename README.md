@@ -25,9 +25,9 @@
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-### Dashboard — Live Detection Feed
+### Dashboard: Live Detection Feed
 
 ![PhishWatch Dashboard](screenshots/dashboard-main.png)
 
@@ -41,37 +41,37 @@
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔍 Real-time Detection
-- **CertStream Integration** — Monitor SSL/TLS certificates as they're issued globally in real-time
-- **OpenSquat Integration** — Detect domain squatting and typosquatting from newly registered domains
-- **WebSocket Dashboard** — Live updates without page refresh, instant notifications
+### Real-time Detection
+- **CertStream Integration**: Monitor SSL/TLS certificates as they're issued globally in real-time
+- **OpenSquat Integration**: Detect domain squatting and typosquatting from newly registered domains
+- **WebSocket Dashboard**: Live updates without page refresh, instant notifications
 
-### 🧠 Intelligent Analysis
-- **Brand Similarity Detection** — Identify domains impersonating 70+ known brands (PayPal, Microsoft, Google, Amazon, Chase, Coinbase, MetaMask, FedEx, and more)
-- **Typosquatting Detection** — Character substitution (g00gle), omission (gogle), and addition (googles) patterns
-- **Homograph/IDN Detection** — Catch Cyrillic, Greek, and other Unicode lookalike attacks
-- **Shannon Entropy Analysis** — Detect algorithmically generated domains (DGA)
-- **Multi-factor Risk Scoring** — 9-factor weighted scoring system (0-100 scale)
+### Intelligent Analysis
+- **Brand Similarity Detection**: Identify domains impersonating 70+ known brands (PayPal, Microsoft, Google, Amazon, Chase, Coinbase, MetaMask, FedEx, and more)
+- **Typosquatting Detection**: Character substitution (g00gle), omission (gogle), and addition (googles) patterns
+- **Homograph/IDN Detection**: Catch Cyrillic, Greek, and other Unicode lookalike attacks
+- **Shannon Entropy Analysis**: Detect algorithmically generated domains (DGA)
+- **Multi-factor Risk Scoring**: 9-factor weighted scoring system (0-100 scale)
 
-### 📊 Professional Dashboard
-- **4 Views** — Dashboard, All Detections, Threat Intelligence, Domain Analysis
-- **Risk Filtering** — Filter by Critical/High/Medium, by source, search
-- **Interactive Charts** — Risk distribution and detection timeline
-- **Manual Analysis** — Analyze any domain on-demand via the UI
-- **CSV/JSON Export** — Export detection data for SIEM integration
-- **Toast Alerts** — Real-time notifications for high-severity detections
+### Professional Dashboard
+- **4 Views**: Dashboard, All Detections, Threat Intelligence, Domain Analysis
+- **Risk Filtering**: Filter by Critical/High/Medium, by source, search
+- **Interactive Charts**: Risk distribution and detection timeline
+- **Manual Analysis**: Analyze any domain on-demand via the UI
+- **CSV/JSON Export**: Export detection data for SIEM integration
+- **Toast Alerts**: Real-time notifications for high-severity detections
 
-### 🔧 Platform
-- **REST API** — Full API for integration with security tools and automation
-- **CLI Tool** — Command-line interface for scripting and CI/CD
-- **Python Package** — `pip install` ready with `pyproject.toml`
-- **Docker Ready** — Dockerfile and Docker Compose included
-- **CI/CD** — GitHub Actions workflow for testing across Python 3.9-3.12
-- **20+ Unit Tests** — Comprehensive test coverage
+### Platform
+- **REST API**: Full API for integration with security tools and automation
+- **CLI Tool**: Command-line interface for scripting and CI/CD
+- **Python Package**: `pip install` ready with `pyproject.toml`
+- **Docker Ready**: Dockerfile and Docker Compose included
+- **CI/CD**: GitHub Actions workflow for testing across Python 3.9-3.12
+- **20+ Unit Tests**: Comprehensive test coverage
 
-### 🏭 Advanced: ICS/IoT/OT Module
+### Advanced: ICS/IoT/OT Module
 - Detects phishing targeting industrial control systems (30+ vendors: Siemens, Schneider, Rockwell, Honeywell, ABB...)
 - Industrial protocol keyword matching (Modbus, DNP3, OPC UA, BACnet, PROFINET...)
 - MITRE ATT&CK for ICS technique mapping
@@ -79,7 +79,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: pip install
 
@@ -111,7 +111,7 @@ python -m phishwatch serve
 
 ---
 
-## 💻 CLI Usage
+## CLI Usage
 
 ### Analyze a domain
 
@@ -150,7 +150,7 @@ phishwatch serve --port 8080 --debug
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 All endpoints are under `/api/v2/`.
 
@@ -183,7 +183,7 @@ curl -X POST http://localhost:5000/api/v2/analyze \
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 PhishWatch/
@@ -226,7 +226,7 @@ OpenSquat (NRD) ───┘    · Brand similarity    · 9-factor scoring   · 
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 pip install -e ".[dev]"
@@ -235,7 +235,7 @@ pytest tests/ -v --cov=phishwatch
 
 ---
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 ```bash
 docker compose up -d
@@ -246,7 +246,7 @@ docker run -p 5000:5000 -e SECRET_KEY=your-secret phishwatch
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 Environment variables or `.env` file:
 
@@ -261,7 +261,7 @@ Environment variables or `.env` file:
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] STIX/TAXII export for threat intelligence sharing
 - [ ] VirusTotal & URLScan.io integration
@@ -274,24 +274,24 @@ Environment variables or `.env` file:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## 📝 License
+## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License, see [LICENSE](LICENSE).
 
 ---
 
-## 👤 Author
+## Author
 
 **Ali AlEnezi** ([@SiteQ8](https://github.com/SiteQ8))
 
 ---
 
 <p align="center">
-  <strong>PhishWatch</strong> — Catching phishing domains before they catch you.
+  <strong>PhishWatch</strong>, Catching phishing domains before they catch you.
 </p>
