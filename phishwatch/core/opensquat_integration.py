@@ -91,6 +91,6 @@ class OpenSquatIntegration:
 
     def _fallback_scan(self, keywords: List[str]) -> List[Dict]:
         """Lightweight fallback when OpenSquat binary isn't available."""
-        # Returns empty — actual scanning requires the OpenSquat tool
+        # Returns empty: actual scanning requires the OpenSquat tool
         logger.info("Fallback mode: OpenSquat binary not available, skipping scan")
         return []

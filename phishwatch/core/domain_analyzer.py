@@ -1,7 +1,7 @@
 """
 Domain Analyzer v2
-Comprehensive domain analysis for phishing detection with
-enhanced entropy calculation, homograph detection, and ICS awareness.
+Domain analysis for phishing detection with
+entropy calculation, homograph detection, and ICS awareness.
 """
 
 import logging
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class DomainAnalyzer:
-    """Comprehensive domain analysis engine."""
+    """Domain analysis engine."""
 
     KNOWN_BRANDS = [
         "paypal", "microsoft", "google", "amazon", "apple", "facebook",

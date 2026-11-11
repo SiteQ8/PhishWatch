@@ -1,5 +1,5 @@
 """
-PhishWatch — Real-time Phishing Detection Platform
+PhishWatch: Real-time Phishing Detection Platform
 Monitor, detect, and analyze phishing domains as they appear.
 
 Author: Ali AlEnezi (SiteQ8)

@@ -25,7 +25,7 @@ class ThreatClassifier:
         "tld": 0.10,
         "entropy": 0.07,
         "homograph": 0.05,
-        "ics_targeting": 0.10,  # NEW: ICS/OT targeting boost
+        "ics_targeting": 0.10,  # ICS/OT targeting boost
     }
 
     HIGH_RISK_TLDS = [

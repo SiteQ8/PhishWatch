@@ -155,7 +155,7 @@ class ICSIoTDetector:
         # Determine category
         detection.category = self._categorise(detection)
 
-        # Risk multiplier – ICS-targeted phishing is always higher severity
+        # Risk multiplier: ICS-targeted phishing is always higher severity
         detection.risk_multiplier = self._calc_multiplier(detection)
 
         # Confidence

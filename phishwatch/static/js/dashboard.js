@@ -1,5 +1,5 @@
 /**
- * PhishWatch v2 — Dashboard Controller
+ * PhishWatch v2: Dashboard Controller
  * Real-time Phishing Detection Platform
  */
 
